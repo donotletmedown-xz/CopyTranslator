@@ -57,7 +57,7 @@ function detectPortableMode(): boolean {
   try {
     const exeDir = dirname(process.execPath);
     const portableDir = join(exeDir, "copytranslator");
-    
+
     // 检查目录是否存在且是文件夹
     if (existsSync(portableDir)) {
       try {
@@ -71,7 +71,7 @@ function detectPortableMode(): boolean {
         return true;
       }
     }
-  } catch (error: any) {
+  } catch (error) {
     // 出错时忽略，使用默认路径
     console.log("Portable mode detection failed:", error.message);
   }

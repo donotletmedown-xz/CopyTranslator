@@ -1,9 +1,5 @@
 import { axios } from "./proxy";
-import {
-  Language,
-  TranslateQueryResult,
-  TranslateError,
-} from "./types";
+import { Language, TranslateQueryResult, TranslateError } from "./types";
 import { DirectionalTranslator } from "./types";
 import md5 from "md5";
 
@@ -57,30 +53,28 @@ export class Keyan extends DirectionalTranslator<KeyanConfig> {
     to: Language,
     config: KeyanConfig
   ): Promise<TranslateQueryResult> {
-    var timestamp = parseInt(
+    const timestamp = parseInt(
       (new Date().getTime() / 1000).toString()
     ).toString();
-    var subject = "gen";
-    var lang_from = Keyan.langMap.get("en");
-    var lang_to = Keyan.langMap.get("zh-CN");
-    var str1 = config.channel_id + config.channel_key + timestamp;
+    const subject = "gen";
+    const lang_from = Keyan.langMap.get("en");
+    const lang_to = Keyan.langMap.get("zh-CN");
+    const str1 = config.channel_id + config.channel_key + timestamp;
     const channel_id = config.channel_id;
-    var sign = md5(str1);
-    const result = await this.request<KeyanResult>(  
-      {
-        url:"https://www.keyanyuedu.com/api/trans",
-        method: "post",
-        data: {
-          text: text,
-          from: lang_from,
-          to: lang_to,
-          subject: subject,
-          channel_id: channel_id,
-          sign: sign,
-          timestamp: timestamp,
-        },
-      }
-    ).then((res) => res.data);
+    const sign = md5(str1);
+    const result = await this.request<KeyanResult>({
+      url: "https://www.keyanyuedu.com/api/trans",
+      method: "post",
+      data: {
+        text: text,
+        from: lang_from,
+        to: lang_to,
+        subject: subject,
+        channel_id: channel_id,
+        sign: sign,
+        timestamp: timestamp,
+      },
+    }).then((res) => res.data);
     if (result.err_code != 0) {
       console.error(result);
       throw new TranslateError("NETWORK_ERROR");

@@ -137,7 +137,7 @@ class EventListener {
         Math.abs(newY - this.lastClickY) < 4
       ) {
         isValidWindow("dragCopy").then((valid) => {
-          let condition =
+          const condition =
             valid &&
             config.get("listenClipboard") &&
             config.get("dragCopy") &&

@@ -50,7 +50,7 @@ export default class EngineButton extends mixins(AppProps, Base) {
     if (this.tooltip != undefined) {
       return this.tooltip;
     }
-    
+
     // 使用统一的名称解析器
     return TranslatorNameResolver.getDisplayName(this.engine, this.trans);
   }

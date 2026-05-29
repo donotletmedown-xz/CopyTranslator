@@ -149,7 +149,7 @@ class ActionManager {
       };
     }
     this.append(constantAction("networkProxy"));
-    this.append(switchAction("enableNetworkProxy","advance"));
+    this.append(switchAction("enableNetworkProxy", "advance"));
 
     //切换状态的动作
     function switchAction(
@@ -253,7 +253,7 @@ class ActionManager {
     }
 
     function getLanguages(isSource: boolean = true): Language[] {
-      let langs: Language[] | undefined = isSource
+      const langs: Language[] | undefined = isSource
         ? store.state.languages.sources
         : store.state.languages.targets;
       return langs.filter((x) => {
@@ -360,7 +360,9 @@ class ActionManager {
         true
       )
     );
-    this.append(listAction("dictionaryType", dictionaryTypes, "translation", true));
+    this.append(
+      listAction("dictionaryType", dictionaryTypes, "translation", true)
+    );
     this.append(
       genericListAction(
         "submenu",
@@ -690,11 +692,7 @@ class ActionManager {
         ];
         break;
       case "snapshotManage":
-        contain = [
-          "newConfigSnapshot",
-          "configSnapshot",
-          "delConfigSnapshot",
-        ];
+        contain = ["newConfigSnapshot", "configSnapshot", "delConfigSnapshot"];
         break;
       case "diffContext":
         contain = [

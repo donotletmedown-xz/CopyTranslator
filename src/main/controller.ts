@@ -43,13 +43,20 @@ class Controller extends MainController {
 
   constructor() {
     super();
+    console.log("[DEBUG] Controller constructor start");
     this.config.load();
+    console.log("[DEBUG] Config loaded");
     // Lazy load to avoid circular dependencies
-    const { customTranslatorManager } = require("@/common/translate/custom-translators");
-    customTranslatorManager.reload();
+    // const {
+    //   customTranslatorManager,
+    // } = require("@/common/translate/custom-translators");
+    // console.log("[DEBUG] Reloading custom translators...");
+    // customTranslatorManager.reload();
+    // console.log("[DEBUG] Custom translators reloaded");
     observers.push(this);
     observers.push(this.transCon);
     this.bindLinks(actionLinks);
+    console.log("[DEBUG] Controller constructor done");
   }
 
   set(identifier: Identifier, value: any): boolean {
@@ -182,18 +189,29 @@ class Controller extends MainController {
   }
 
   async createWindow() {
+    console.log("[DEBUG] createWindow start");
     this.l10n.install(store, this.config.get("localeSetting")); //修复无法检测系统语言的问题
+    console.log("[DEBUG] l10n installed");
     const transInitPromise = this.transCon.init(); //初始化翻译控制器
+    console.log("[DEBUG] transCon init called");
     this.restoreFromConfig(); //恢复设置
+    console.log("[DEBUG] restoreFromConfig done");
     eventListener.bind(); //绑定事件
+    console.log("[DEBUG] eventListener bound");
     startService(this, authorizeKey); // 创建代理服务
+    console.log("[DEBUG] startService done");
+    console.log("[DEBUG] Creating main window...");
     this.win.mainWindow; //创建主窗口
+    console.log("[DEBUG] Main window created");
     this.shortcut.init();
+    console.log("[DEBUG] shortcut init done");
     this.menu.init();
+    console.log("[DEBUG] menu init done");
     if (this.get("autoCheckUpdate")) {
       bus.at("dispatch", "checkUpdate");
     }
     await transInitPromise;
+    console.log("[DEBUG] createWindow done");
   }
 
   async onExit() {

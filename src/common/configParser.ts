@@ -173,8 +173,7 @@ class ConfigParser {
     const providerConfigs = (values["translatorProviders"] || []) as any[];
     const customIdsFromProviders = providerConfigs.flatMap((provider) => {
       const providerId = provider && provider.id;
-      const enabledModels =
-        (provider && provider.enabledModels) || [];
+      const enabledModels = (provider && provider.enabledModels) || [];
       if (!providerId || !Array.isArray(enabledModels)) {
         return [];
       }
@@ -189,7 +188,9 @@ class ConfigParser {
       Array.from(new Set(engines || [])).filter(
         (id) => hasTranslator(String(id)) || customIdSet.has(String(id))
       );
-    const enabled = filterExistingWithCustom(config["translator-enabled"] || []);
+    const enabled = filterExistingWithCustom(
+      config["translator-enabled"] || []
+    );
     const activeSet = new Set(
       getEnabledWithCustomIds(enabled, [...customIdSet])
     );
@@ -219,7 +220,7 @@ class ConfigParser {
   }
 
   getConfig2Save() {
-    let config2Save: { [key: string]: string } = store.state.config;
+    const config2Save: { [key: string]: string } = store.state.config;
     this.notSavingKeys.map((key) => delete config2Save[key]); //去掉不需要保存的
     return config2Save;
   }
@@ -268,7 +269,7 @@ class ConfigParser {
   resumeSnapshot(name: string) {
     const snapshot = this.get<ConfigSnapshots>("configSnapshots")[name];
     const resume = (key: Identifier) => {
-      let val = snapshot[key];
+      const val = snapshot[key];
       const rule = this.getRule(key);
       let invalid: boolean =
         rule.minimalVersion != undefined &&

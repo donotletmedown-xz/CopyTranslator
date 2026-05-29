@@ -13,7 +13,10 @@ const id = "gbus";
 const isMain = process.type == "browser";
 const ipc = isMain ? ipcMain : ipcRenderer;
 type Event = IpcMainEvent | IpcRendererEvent | null;
-const ipcListenerMap = new Map<string, Map<Function, (...args: any[]) => void>>();
+const ipcListenerMap = new Map<
+  string,
+  Map<Function, (...args: any[]) => void>
+>();
 
 function listenWrapper(listener: Function) {
   return (event: Event, ...args: any[]) => {

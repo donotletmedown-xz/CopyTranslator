@@ -11,7 +11,10 @@ export class TranslatorNameResolver {
    * 获取翻译器的显示名称
    * 优先级：本地化翻译 > tooltip > 自定义配置名称 > 内置元数据名称 > 原始ID
    */
-  static getDisplayName(translatorId: string, locale: Record<string, any> = {}): string {
+  static getDisplayName(
+    translatorId: string,
+    locale: Record<string, any> = {}
+  ): string {
     // 1. 优先使用本地化翻译
     const localized = locale[translatorId];
     if (localized) {

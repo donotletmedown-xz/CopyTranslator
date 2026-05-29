@@ -24,9 +24,9 @@ export function splitEng(text: string): string[] {
 
 // split with seprator
 export function splitChn(text: string): string[] {
-  let sentences = compact(text.trim().split(chnEnds));
-  let ends = [];
-  for (let c of text) {
+  const sentences = compact(text.trim().split(chnEnds));
+  const ends = [];
+  for (const c of text) {
     if ("？。！".includes(c)) {
       ends.push(c);
     }
@@ -70,7 +70,7 @@ export function reSegmentGoogle(
 
   let resultString = "";
   let index = 0;
-  let paragraphs: string[] = [];
+  const paragraphs: string[] = [];
   counts.forEach((count) => {
     let para = "";
     for (let i = 0; i < count; i++) {
@@ -119,7 +119,7 @@ export function reSegment(
 
   let resultString = "";
   let index = 0;
-  let paragraphs: string[] = [];
+  const paragraphs: string[] = [];
   src_counts.forEach((count) => {
     let para = "";
     for (let i = 0; i < count; i++) {
@@ -155,7 +155,7 @@ export function autoReSegment(result: TranslateResult): CopyTranslateResult {
     trimstart(sentence.trim(), "？。！?.!")
   );
   resultString = paragraphs.join("\n");
-  let new_result = { ...result, resultString };
+  const new_result = { ...result, resultString };
   new_result.trans.paragraphs = paragraphs;
   return new_result;
 }

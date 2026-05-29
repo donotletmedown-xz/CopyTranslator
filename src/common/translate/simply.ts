@@ -1,8 +1,4 @@
-import {
-  Language,
-  TranslateQueryResult,
-  BaseTranslator
-} from "./types";
+import { Language, TranslateQueryResult, BaseTranslator } from "./types";
 import qs from "qs";
 import { promiseAny } from "./types";
 
@@ -227,7 +223,8 @@ export class Simply extends BaseTranslator<SimplyConfig> {
       throw new Error("NETWORK_ERROR");
     }
 
-    const transText = (result.data["translated_text"]||result.data["translated-text"]) as string;
+    const transText = (result.data["translated_text"] ||
+      result.data["translated-text"]) as string;
 
     return {
       text: text,

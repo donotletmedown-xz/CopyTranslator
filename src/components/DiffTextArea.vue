@@ -98,15 +98,17 @@ export default class DiffTextArea extends Mixins(BaseView) {
   }
 
   get sortedEngines(): string[] {
-    const configOrder = this.$store.state.config['translator-compare'] || [];
+    const configOrder = this.$store.state.config["translator-compare"] || [];
     const bufferKeys = Object.keys(this.resultBuffer);
-    
+
     // Filter configOrder to only include keys present in buffer
-    const sorted = configOrder.filter((key: string) => bufferKeys.includes(key));
-    
+    const sorted = configOrder.filter((key: string) =>
+      bufferKeys.includes(key)
+    );
+
     // Add any keys from buffer that weren't in configOrder
     const remaining = bufferKeys.filter((key: string) => !sorted.includes(key));
-    
+
     return [...sorted, ...remaining];
   }
 

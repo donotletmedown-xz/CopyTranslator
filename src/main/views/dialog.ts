@@ -63,7 +63,7 @@ export function showDragCopyEmptyWhitelistWarning(controller: MainController) {
 
 export function showHelpAndUpdate(controller: MainController) {
   const t = store.getters.locale;
-  let buttons = [t["homepage"], t["userManual"], t["checkUpdate"], "cancel"];
+  const buttons = [t["homepage"], t["userManual"], t["checkUpdate"], "cancel"];
 
   dialog
     .showMessageBox(BrowserWindow.getAllWindows()[0], {

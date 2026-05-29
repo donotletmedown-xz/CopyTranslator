@@ -7,17 +7,18 @@
       </v-card-title>
       <v-card-text class="pt-0 pb-2">
         <v-expansion-panels multiple flat>
-          <v-expansion-panel
-            v-for="ocr in ocrList"
-            :key="ocr.id"
-          >
+          <v-expansion-panel v-for="ocr in ocrList" :key="ocr.id">
             <v-expansion-panel-header>
               <div class="d-flex align-center flex-grow-1 py-2">
                 <div class="flex-grow-1 subtitle-2">{{ ocr.name }}</div>
               </div>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <v-card flat class="pa-3" style="background: #fafafa; border-radius: 4px;">
+              <v-card
+                flat
+                class="pa-3"
+                style="background: #fafafa; border-radius: 4px;"
+              >
                 <KeyConfig :identifier="ocr.id"></KeyConfig>
               </v-card>
             </v-expansion-panel-content>
@@ -41,14 +42,14 @@ import { recognizerTypes } from "@/common/types";
   },
 })
 export default class OcrConfig extends Vue {
-  ocrList: Array<{id: string; name: string}> = [];
+  ocrList: Array<{ id: string; name: string }> = [];
 
   get trans() {
     return this.$store.getters.locale;
   }
 
   get availableRecognizers(): string[] {
-    return recognizerTypes as unknown as string[];
+    return (recognizerTypes as unknown) as string[];
   }
 
   mounted() {

@@ -13,13 +13,13 @@
       @keyup.ctrl.80.capture="command"
       v-on:drop="dragTranslate"
     >
-        <div
-          v-if="(mode === 'normal'|| mode==='none')"
-          class="focusPadding"
-          style="height: 100%;"
-          v-bind:style="focusStyle"
-          @contextmenu="openMenu('focusContext')"
-        >
+      <div
+        v-if="(mode === 'normal'|| mode==='none')"
+        class="focusPadding"
+        style="height: 100%;"
+        v-bind:style="focusStyle"
+        @contextmenu="openMenu('focusContext')"
+      >
         <div v-if="(config.focusSource && mode=='normal')">
           <div>原文：</div>
           <div class="focusText" id="focusSource" contenteditable="true">

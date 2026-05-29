@@ -19,8 +19,8 @@ import Action from "@/components/Action.vue";
 @Component({
   components: {
     KeyConfig,
-    Action
-  }
+    Action,
+  },
 })
 export default class NetworkProxy extends BaseView {}
 </script>

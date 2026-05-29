@@ -15,7 +15,9 @@
       </div>
     </div>
     <div class="switch-restore">
-      <SimpleButton @click="restore">{{ trans["restoreMultiDefault"] }}</SimpleButton>
+      <SimpleButton @click="restore">{{
+        trans["restoreMultiDefault"]
+      }}</SimpleButton>
     </div>
   </div>
 </template>

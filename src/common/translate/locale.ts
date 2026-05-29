@@ -12,7 +12,7 @@ export const languageLocales = new Map<Language, typeof en>([
 ]);
 
 export function getLanguageLocales(lang: Language): Locale {
-  let key = lang;
+  const key = lang;
   // if (key === "auto") {
   //   key = getDefaultLocale();
   // }

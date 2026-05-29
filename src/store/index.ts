@@ -13,7 +13,7 @@ Vue.use(Vuex);
 const plugins = [
   registerLocale,
   initState,
-  createSharedMutations(),
+  // createSharedMutations(), // 暂时禁用，可能导致主进程卡住
   observePlugin,
   updateViewPlugin,
 ];

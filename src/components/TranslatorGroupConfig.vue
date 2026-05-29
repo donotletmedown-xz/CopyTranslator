@@ -7,8 +7,10 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-card-title>
-    
-    <div class="caption grey--text mb-2" v-if="description">{{ description }}</div>
+
+    <div class="caption grey--text mb-2" v-if="description">
+      {{ description }}
+    </div>
 
     <v-card flat outlined>
       <draggable v-model="localList" @change="updateConfig" handle=".handle">
@@ -20,8 +22,11 @@
             <v-icon small>mdi-close</v-icon>
           </v-btn>
         </div>
-        <div v-if="localList.length === 0" class="caption grey--text text-center py-4">
-          {{ trans['noItems'] || '暂无项目' }}
+        <div
+          v-if="localList.length === 0"
+          class="caption grey--text text-center py-4"
+        >
+          {{ trans["noItems"] || "暂无项目" }}
         </div>
       </draggable>
     </v-card>
@@ -30,7 +35,7 @@
     <v-dialog v-model="showAddDialog" max-width="400" scrollable>
       <v-card>
         <v-card-title class="subtitle-1">
-          {{ trans['addTranslator'] || '添加翻译器' }}
+          {{ trans["addTranslator"] || "添加翻译器" }}
         </v-card-title>
         <v-card-text style="height: 300px;" class="px-0">
           <v-list dense>
@@ -41,7 +46,9 @@
                 @click="addTranslator(id)"
               >
                 <v-list-item-content>
-                  <v-list-item-title>{{ getTranslatorName(id) }}</v-list-item-title>
+                  <v-list-item-title>{{
+                    getTranslatorName(id)
+                  }}</v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-icon small color="primary">mdi-plus</v-icon>
@@ -50,14 +57,16 @@
             </template>
             <v-list-item v-else>
               <v-list-item-content class="grey--text caption text-center">
-                {{ trans['noMoreTranslators'] || '没有更多可用翻译器' }}
+                {{ trans["noMoreTranslators"] || "没有更多可用翻译器" }}
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="showAddDialog = false">{{ trans['cancel'] || '取消' }}</v-btn>
+          <v-btn text @click="showAddDialog = false">{{
+            trans["cancel"] || "取消"
+          }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -99,13 +108,13 @@ export default class TranslatorGroupConfig extends Vue {
     return available.filter((id: string) => !this.localList.includes(id));
   }
 
-  @Watch('$store.state.config', { deep: true, immediate: true })
+  @Watch("$store.state.config", { deep: true, immediate: true })
   onConfigChange() {
-      const val = this.$store.state.config[this.configKey];
-      // Simple array comparison to avoid unnecessary updates
-      if (JSON.stringify(val) !== JSON.stringify(this.localList)) {
-          this.localList = val ? [...val] : [];
-      }
+    const val = this.$store.state.config[this.configKey];
+    // Simple array comparison to avoid unnecessary updates
+    if (JSON.stringify(val) !== JSON.stringify(this.localList)) {
+      this.localList = val ? [...val] : [];
+    }
   }
 
   getTranslatorName(translatorId: string): string {
@@ -124,7 +133,7 @@ export default class TranslatorGroupConfig extends Vue {
   }
 
   updateConfig() {
-      eventBus.at("dispatch", this.configKey, this.localList);
+    eventBus.at("dispatch", this.configKey, this.localList);
   }
 }
 </script>
@@ -152,7 +161,7 @@ export default class TranslatorGroupConfig extends Vue {
   color: #757575;
 }
 .group-item-name {
-    font-size: 14px;
-    font-weight: 500;
+  font-size: 14px;
+  font-weight: 500;
 }
 </style>

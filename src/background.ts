@@ -69,7 +69,13 @@ app.on("ready", async () => {
     // await installVueDevtools();
   }
   console.timeEnd("before-ready");
-  controller.createWindow();
+  console.log("[DEBUG] App ready, creating window...");
+  try {
+    await controller.createWindow();
+    console.log("[DEBUG] Window created successfully");
+  } catch (e) {
+    console.error("[DEBUG] Failed to create window:", e);
+  }
 });
 
 // Exit cleanly on request from parent process in development mode.

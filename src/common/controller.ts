@@ -88,7 +88,7 @@ export abstract class CommonController {
           if (param instanceof Array) {
             this.set(identifier, param);
           } else {
-            let currentItems = [...this.get<string[]>(identifier)];
+            const currentItems = [...this.get<string[]>(identifier)];
             const idx = currentItems.indexOf(param);
             if (idx == -1) {
               currentItems.push(param);

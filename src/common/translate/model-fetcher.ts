@@ -58,7 +58,7 @@ export async function fetchModels(
     }
   } catch (error) {
     console.error("[模型获取] 失败:", error);
-    
+
     // 提供更友好的错误信息
     if (error.response) {
       // API 返回了错误响应

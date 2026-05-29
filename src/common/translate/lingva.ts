@@ -1,8 +1,4 @@
-import {
-  Language,
-  BaseTranslator,
-  TranslateQueryResult,
-} from "./types";
+import { Language, BaseTranslator, TranslateQueryResult } from "./types";
 import { promiseAny } from "./types";
 
 const langMap: [Language, string][] = [
@@ -150,7 +146,7 @@ const instances = [
   "translate.dr460nf1r3.org",
   "lingva.garudalinux.org",
   "translate.jae.fi",
-  "lingva.1f616emo.xyz"
+  "lingva.1f616emo.xyz",
 ];
 
 const TIMEOUT = 1000 * 1; //1s

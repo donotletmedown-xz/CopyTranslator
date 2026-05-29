@@ -12,7 +12,7 @@ export const defaultTokens = new Map<TranslatorType, any>([
   [
     "google",
     {
-      token: process.env.VUE_APP_GOOGLE_TOKEN as string || "",
+      token: (process.env.VUE_APP_GOOGLE_TOKEN as string) || "",
       source: "lingva", // 默认使用 Lingva 作为 Google 翻译的后端
       mirror: "https://translate.amz.wang", // Google 镜像 URL（仅在使用 Google 官方翻译时需要）
     },
@@ -54,7 +54,8 @@ export const defaultTokens = new Map<TranslatorType, any>([
   [
     "stepfun",
     {
-      apiBase: process.env.VUE_APP_STEPFUN_API_BASE || "https://openrouter.ai/api/v1",
+      apiBase:
+        process.env.VUE_APP_STEPFUN_API_BASE || "https://openrouter.ai/api/v1",
       apiKey: process.env.VUE_APP_STEPFUN_API_KEY || "",
       model: process.env.VUE_APP_STEPFUN_MODEL || "stepfun/step-3.5-flash:free",
       prompt: "default",
@@ -63,9 +64,10 @@ export const defaultTokens = new Map<TranslatorType, any>([
     },
   ],
   [
-    "niu",{
-      apikey:process.env.VUE_APP_NIU_API_KEY || "",
-    }
+    "niu",
+    {
+      apikey: process.env.VUE_APP_NIU_API_KEY || "",
+    },
   ],
   [
     "aliyun",
@@ -95,14 +97,8 @@ export const defaultTokens = new Map<TranslatorType, any>([
       secretKey: process.env.VUE_APP_TENCENT_SECRET_KEY || "",
     },
   ],
-  [
-    "tencentsmart",
-    {},
-  ],
-  [
-    "yandex",
-    {},
-  ],
+  ["tencentsmart", {}],
+  ["yandex", {}],
   [
     "volc",
     {

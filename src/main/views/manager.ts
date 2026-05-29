@@ -101,7 +101,7 @@ export class WindowManager {
       return;
     }
     const oldLayoutType = config.get<LayoutType>("layoutType");
-    let windowConfig = config.get<LayoutConfig>(oldLayoutType);
+    const windowConfig = config.get<LayoutConfig>(oldLayoutType);
     const window = this.mainWindow;
     config.set(oldLayoutType, {
       ...windowConfig,
@@ -114,7 +114,7 @@ export class WindowManager {
       return;
     }
     const layoutType = config.get<LayoutType>("layoutType");
-    let windowConfig = config.get<LayoutConfig>(layoutType);
+    const windowConfig = config.get<LayoutConfig>(layoutType);
     this.mainWindow.setBounds(windowConfig);
   }
 
@@ -156,7 +156,8 @@ export class WindowManager {
   edgeHide(hideDirection: HideDirection) {
     const window = this.mainWindow;
     const bounds = window.getBounds();
-    let { x, y, width, height } = bounds;
+    let { x, y } = bounds;
+    const { width, height } = bounds;
     const { x: xBound, width: screenWidth } = screen.getDisplayMatching(
       bounds
     ).bounds;
@@ -192,7 +193,8 @@ export class WindowManager {
   edgeShow() {
     const window = this.mainWindow;
     const bounds = window.getBounds();
-    let { x, y, width, height } = bounds;
+    let { x, y } = bounds;
+    const { width, height } = bounds;
     const { x: xBound, width: screenWidth } = screen.getDisplayMatching(
       bounds
     ).bounds;
@@ -222,13 +224,14 @@ export class WindowManager {
     if (!this.controller.get("autoHide")) {
       return "None";
     }
-    let bound = window.getBounds();
-    let { x, y, width } = bound;
+    const bound = window.getBounds();
+    let { x } = bound;
+    const { y, width } = bound;
     const { x: xBound, width: screenWidth } = screen.getDisplayMatching(
       bound
     ).bounds;
     x -= xBound;
-    let xEnd = x + width;
+    const xEnd = x + width;
 
     if (x <= 0) return "Left";
     if (xEnd >= screenWidth) {

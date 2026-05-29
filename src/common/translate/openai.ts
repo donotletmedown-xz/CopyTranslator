@@ -174,24 +174,24 @@ export class OpenAI extends BaseTranslator<OpenAIConfig> {
 
   constructor(options: { axios: any; config: any }) {
     super(options.axios);
-    
+
     // 处理从配置系统传来的配置，字符串值需要转换
     if (options.config) {
       this.config.apiBase = options.config.apiBase || this.config.apiBase;
       this.config.apiKey = options.config.apiKey || "";
       this.config.model = options.config.model || this.config.model;
-      
+
       // 如果用户提供了自定义提示词，使用它；"default" 表示使用默认提示词
       if (options.config.prompt && options.config.prompt !== "default") {
         this.config.prompt = options.config.prompt;
       }
-      
+
       // 将字符串转换为数字
       if (options.config.temperature) {
         const temp = parseFloat(options.config.temperature);
         this.config.temperature = isNaN(temp) ? 0.3 : temp;
       }
-      
+
       if (options.config.maxTokens) {
         const maxTokens = parseInt(options.config.maxTokens);
         this.config.maxTokens = isNaN(maxTokens) ? 2000 : maxTokens;
@@ -211,9 +211,8 @@ export class OpenAI extends BaseTranslator<OpenAIConfig> {
     const prompt = this.config.prompt || DEFAULT_PROMPT;
 
     // 如果源语言是 auto，就不在提示词中指定源语言，让 LLM 自动识别
-    const actualPrompt = from === "auto" 
-      ? prompt.replace(/from {from} /g, "")
-      : prompt;
+    const actualPrompt =
+      from === "auto" ? prompt.replace(/from {from} /g, "") : prompt;
 
     return actualPrompt
       .replace(/{from}/g, fromLang)
@@ -272,7 +271,7 @@ export class OpenAI extends BaseTranslator<OpenAIConfig> {
       return response.data;
     } catch (error) {
       console.error("OpenAI API 调用失败:", error);
-      if (error && typeof error === 'object' && 'response' in error) {
+      if (error && typeof error === "object" && "response" in error) {
         console.error("错误响应:", (error as any).response.data);
         throw new TranslateError("API_SERVER_ERROR");
       }
@@ -319,7 +318,7 @@ export class OpenAI extends BaseTranslator<OpenAIConfig> {
       }
 
       const translatedText = response.choices[0].message.content.trim();
-      
+
       return {
         text: text,
         from: from,

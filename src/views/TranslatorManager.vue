@@ -1,8 +1,8 @@
 <template>
   <div style="height: 100%; display: flex; flex-direction: column;">
     <v-tabs v-model="activeTab" class="flex-grow-0">
-      <v-tab>{{ trans['translatorList'] || '翻译器列表' }}</v-tab>
-      <v-tab>{{ trans['translatorGroups'] || '分组设置' }}</v-tab>
+      <v-tab>{{ trans["translatorList"] || "翻译器列表" }}</v-tab>
+      <v-tab>{{ trans["translatorGroups"] || "分组设置" }}</v-tab>
     </v-tabs>
 
     <div style="flex: 1; overflow: hidden; position: relative;">
@@ -10,9 +10,11 @@
         <v-tab-item style="min-height: 100%;">
           <div class="pa-3">
             <div class="caption grey--text mb-3">
-              {{ trans["enabledCount"] || "已启用" }}: {{ enabledTranslators.length }}
+              {{ trans["enabledCount"] || "已启用" }}:
+              {{ enabledTranslators.length }}
               ·
-              {{ trans["cachedCount"] || "已缓存" }}: {{ cacheTranslators.length }}
+              {{ trans["cachedCount"] || "已缓存" }}:
+              {{ cacheTranslators.length }}
             </div>
             <v-alert dense text type="info" class="mb-4">
               <div class="caption" style="white-space: pre-line;">
@@ -38,7 +40,12 @@
                 {{ trans["expand"] || "展开" }}
               </div>
             </div>
-            <v-expansion-panels multiple flat v-model="configVisibleIndexes" class="translator-panels">
+            <v-expansion-panels
+              multiple
+              flat
+              v-model="configVisibleIndexes"
+              class="translator-panels"
+            >
               <v-expansion-panel
                 v-for="translator in translatorList"
                 :key="translator.id"
@@ -51,8 +58,14 @@
                         <v-checkbox
                           v-model="translator.enabled"
                           @click.stop
-                          @change="updateEnabled(translator.id, translator.enabled)"
-                          :disabled="!isConfigComplete(translator.id) || (translator.id === 'google' && enabledTranslators.length <= 1)"
+                          @change="
+                            updateEnabled(translator.id, translator.enabled)
+                          "
+                          :disabled="
+                            !isConfigComplete(translator.id) ||
+                            (translator.id === 'google' &&
+                              enabledTranslators.length <= 1)
+                          "
                           :title="getCheckboxTitle(translator.id)"
                           hide-details
                           class="translator-checkbox"
@@ -82,7 +95,11 @@
                   </template>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <v-card flat class="pa-3" style="background: #fafafa; border-radius: 4px;">
+                  <v-card
+                    flat
+                    class="pa-3"
+                    style="background: #fafafa; border-radius: 4px;"
+                  >
                     <KeyConfig :identifier="translator.id"></KeyConfig>
                   </v-card>
                 </v-expansion-panel-content>
@@ -101,7 +118,10 @@
                   :label="trans['selectFallbackTranslator'] || '选择后备翻译器'"
                   outlined
                   dense
-                  :hint="trans['<tooltip>fallbackTranslator'] || '当前翻译器不支持目标语言时自动使用'"
+                  :hint="
+                    trans['<tooltip>fallbackTranslator'] ||
+                    '当前翻译器不支持目标语言时自动使用'
+                  "
                   persistent-hint
                   class="caption"
                   :disabled="enabledTranslators.length === 0"
@@ -122,29 +142,38 @@
             </v-card>
           </div>
         </v-tab-item>
-        
+
         <v-tab-item style="min-height: 100%;">
           <div class="pa-3">
             <TranslatorGroupConfig
               configKey="translator-cache"
               :title="trans['cacheGroup'] || '缓存分组'"
-              :description="trans['cacheGroupDesc'] || '配置自动查询并缓存结果的翻译器及其顺序'"
-            ></TranslatorGroupConfig>
-            
-            <v-divider class="my-4"></v-divider>
-            
-            <TranslatorGroupConfig
-              configKey="translator-compare"
-              :title="trans['compareGroup'] || '对比分组'"
-              :description="trans['compareGroupDesc'] || '配置多源对比模式下使用的翻译器及其顺序'"
+              :description="
+                trans['cacheGroupDesc'] ||
+                '配置自动查询并缓存结果的翻译器及其顺序'
+              "
             ></TranslatorGroupConfig>
 
             <v-divider class="my-4"></v-divider>
-            
+
+            <TranslatorGroupConfig
+              configKey="translator-compare"
+              :title="trans['compareGroup'] || '对比分组'"
+              :description="
+                trans['compareGroupDesc'] ||
+                '配置多源对比模式下使用的翻译器及其顺序'
+              "
+            ></TranslatorGroupConfig>
+
+            <v-divider class="my-4"></v-divider>
+
             <TranslatorGroupConfig
               configKey="translator-double"
               :title="trans['doubleGroup'] || '双击分组'"
-              :description="trans['doubleGroupDesc'] || '配置双击复制/翻译时使用的翻译器及其顺序'"
+              :description="
+                trans['doubleGroupDesc'] ||
+                '配置双击复制/翻译时使用的翻译器及其顺序'
+              "
             ></TranslatorGroupConfig>
           </div>
         </v-tab-item>
@@ -169,11 +198,16 @@ import eventBus from "@/common/event-bus";
 @Component({
   components: {
     KeyConfig,
-    TranslatorGroupConfig
+    TranslatorGroupConfig,
   },
 })
 class TranslatorManager extends Vue {
-  translatorList: Array<{id: string; name: string; enabled: boolean; cache: boolean}> = [];
+  translatorList: Array<{
+    id: string;
+    name: string;
+    enabled: boolean;
+    cache: boolean;
+  }> = [];
   configVisibleIndexes: number[] = [];
   activeTab = 0;
 
@@ -250,16 +284,18 @@ class TranslatorManager extends Vue {
   }
 
   getCheckboxTitle(translatorId: string): string {
-    if (translatorId === 'google' && this.enabledTranslators.length <= 1) {
-      return '至少需要启用一个翻译器';
+    if (translatorId === "google" && this.enabledTranslators.length <= 1) {
+      return "至少需要启用一个翻译器";
     }
 
     const status = this.getConfigStatus(translatorId);
     if (!status.canEnable) {
-      return status.enableReason || this.trans["configRequired"] || "请先配置翻译器";
+      return (
+        status.enableReason || this.trans["configRequired"] || "请先配置翻译器"
+      );
     }
 
-    return '';
+    return "";
   }
 
   updateCache(translatorId: string, cache: boolean) {
@@ -274,22 +310,22 @@ class TranslatorManager extends Vue {
     this.applyCacheTranslators(newCache);
   }
 
-
-
   applyEnabledTranslators(newEnabled: string[]) {
     const custom = this.$store.state.config["customTranslators"] || [];
-    const allowed = new Set(getAvailableTranslatorIds(this.availableTranslators, custom));
+    const allowed = new Set(
+      getAvailableTranslatorIds(this.availableTranslators, custom)
+    );
     const enabled = Array.from(new Set(newEnabled)).filter((id) =>
       allowed.has(id)
     );
     const activeSet = new Set(getEnabledWithCustomIds(enabled, custom));
     const cache = this.cacheTranslators.filter((id) => activeSet.has(id));
-    const compare = (this.$store.state.config["translator-compare"] || []).filter(
-      (id: string) => activeSet.has(id)
-    );
-    const double = (this.$store.state.config["translator-double"] || []).filter(
-      (id: string) => activeSet.has(id)
-    );
+    const compare = (
+      this.$store.state.config["translator-compare"] || []
+    ).filter((id: string) => activeSet.has(id));
+    const double = (
+      this.$store.state.config["translator-double"] || []
+    ).filter((id: string) => activeSet.has(id));
     this.callback("translator-enabled", enabled);
     this.callback("translator-cache", cache);
     this.callback("translator-compare", compare);

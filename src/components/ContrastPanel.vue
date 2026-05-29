@@ -1,6 +1,9 @@
 <template>
   <div :style="maxParent">
-    <Focus class="maxNoPad areaWarpper focusArea" v-if="layoutType === 'focus'"></Focus>
+    <Focus
+      class="maxNoPad areaWarpper focusArea"
+      v-if="layoutType === 'focus'"
+    ></Focus>
     <div
       v-else-if="layoutType === 'horizontal'"
       class="maxNoPad"

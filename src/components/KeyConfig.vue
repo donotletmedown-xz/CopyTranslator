@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-end mb-2" v-if="topSave">
-      <v-btn
-        small
-        color="primary"
-        @click="save()"
-        :disabled="!isDirty"
-      >
+      <v-btn small color="primary" @click="save()" :disabled="!isDirty">
         {{ trans["saveConfig"] || "保存配置" }}
       </v-btn>
     </div>
@@ -20,7 +15,12 @@
     >
       <span v-if="noticeText">{{ noticeText }}</span>
       <span v-if="noticeText && docUrl" class="mx-1">·</span>
-      <a v-if="docUrl" :href="docUrl" @click.prevent="openDocUrl" rel="noopener">
+      <a
+        v-if="docUrl"
+        :href="docUrl"
+        @click.prevent="openDocUrl"
+        rel="noopener"
+      >
         {{ trans["openReference"] || "配置指南" }}
       </a>
     </v-alert>
@@ -110,7 +110,9 @@ class KeyConfig extends Base {
   }
 
   get isDirty() {
-    return JSON.stringify(this.keyConfigLocal) !== JSON.stringify(this.keyConfig);
+    return (
+      JSON.stringify(this.keyConfigLocal) !== JSON.stringify(this.keyConfig)
+    );
   }
 
   get noticeText() {
@@ -159,7 +161,7 @@ class KeyConfig extends Base {
     try {
       const rule = config.getRule(this.identifier);
       const metadata = rule?.metadata?.[key];
-      
+
       return metadata;
     } catch (e) {
       console.error(`[KeyConfig] getFieldMetadata error:`, e);
@@ -207,7 +209,7 @@ class KeyConfig extends Base {
       // 如果值为 null 或 undefined，且 UI 类型为文本，则转为空字符串
       if (val == null) {
         const uiType = this.getUiType(key);
-        if (uiType === 'text' || uiType === 'textarea' || uiType === 'select') {
+        if (uiType === "text" || uiType === "textarea" || uiType === "select") {
           this.keyConfigLocal[key] = "";
         }
       }
@@ -216,7 +218,9 @@ class KeyConfig extends Base {
     if (status.canSave) {
       this.callback(this.identifier, this.keyConfigLocal);
       if (translatorTypes.includes(this.identifier as any)) {
-        const enabled = [...(this.$store.state.config["translator-enabled"] || [])];
+        const enabled = [
+          ...(this.$store.state.config["translator-enabled"] || []),
+        ];
         const cache = [...(this.$store.state.config["translator-cache"] || [])];
         if (status.canEnable) {
           const nextEnabled = Array.from(
@@ -239,18 +243,21 @@ class KeyConfig extends Base {
             this.callback("fallbackTranslator", nextEnabled[0]);
           }
         } else {
-          const nextEnabled = enabled.filter((id: string) => id !== this.identifier);
+          const nextEnabled = enabled.filter(
+            (id: string) => id !== this.identifier
+          );
           if (nextEnabled.length !== enabled.length) {
             this.callback("translator-enabled", nextEnabled);
           }
-          const nextCache = cache.filter((id: string) => id !== this.identifier);
+          const nextCache = cache.filter(
+            (id: string) => id !== this.identifier
+          );
           if (nextCache.length !== cache.length) {
             this.callback("translator-cache", nextCache);
           }
         }
       }
-      this.saveMessage =
-        this.trans["configSaveSuccess"] || "已保存并通过校验";
+      this.saveMessage = this.trans["configSaveSuccess"] || "已保存并通过校验";
       this.saveMessageType = "success";
     } else {
       this.saveMessage =

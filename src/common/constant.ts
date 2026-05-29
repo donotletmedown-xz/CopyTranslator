@@ -1,5 +1,5 @@
 import { osSpec } from "./env";
-let constants: { [key: string]: string } = {
+const constants: { [key: string]: string } = {
   appName: "CopyTranslator",
   nickName: "知微",
   version: "12.1.0",
@@ -60,7 +60,8 @@ export function compatible(configVersion: string): boolean {
     const minVersion = "12.1.0";
     const minCount = version2int(minVersion);
 
-    if (configCount < minCount) { // 12.0.1 之前的版本，不支持新的配置项
+    if (configCount < minCount) {
+      // 12.0.1 之前的版本，不支持新的配置项
       return false;
     }
     return true;

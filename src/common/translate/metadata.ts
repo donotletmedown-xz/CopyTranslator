@@ -1,4 +1,3 @@
-
 export const builtInTranslatorMetadata: Record<string, { name: string }> = {
   baidu: { name: "百度翻译" },
   google: { name: "Google Translate" },

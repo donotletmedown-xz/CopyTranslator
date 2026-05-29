@@ -16,12 +16,17 @@ export class EasyEngine extends WordEngine {
 
   async query(words: string): Promise<QueryDictResult> {
     if (!this.engine_func) {
-        const moduleName = engine_modules[this.name];
-        if (moduleName) {
-            this.engine_func = require(moduleName);
-        } else {
-            return Promise.reject({ words: words, code: -1, engine: this.name, error: "Engine not found" });
-        }
+      const moduleName = engine_modules[this.name];
+      if (moduleName) {
+        this.engine_func = require(moduleName);
+      } else {
+        return Promise.reject({
+          words: words,
+          code: -1,
+          engine: this.name,
+          error: "Engine not found",
+        });
+      }
     }
     return this.engine_func!(words, {}).then(
       (res: any) => {
@@ -47,7 +52,6 @@ export class BingEngine extends EasyEngine {
     super("bing");
   }
 }
-
 
 export class YoudaoEngine extends EasyEngine {
   constructor() {

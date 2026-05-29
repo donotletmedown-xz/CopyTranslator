@@ -8,7 +8,14 @@ import {
 } from "@opentranslate2/translator";
 import { ColorStatus } from "../types";
 import { TranslatorType } from "../types";
-export { TranslateResult, Language, Languages, BaseTranslator, TranslateQueryResult, TranslateError };
+export {
+  TranslateResult,
+  Language,
+  Languages,
+  BaseTranslator,
+  TranslateQueryResult,
+  TranslateError,
+};
 export * from "./result-types";
 
 export type CopyTranslateResult = TranslateResult & {

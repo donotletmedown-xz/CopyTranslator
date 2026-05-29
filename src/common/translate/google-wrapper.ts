@@ -5,9 +5,9 @@ import { Lingva, defaultLingvaConfig } from "./lingva";
 import { getProxyAxios } from "./proxy";
 
 export interface GoogleWrapperConfig {
-  apiKey: string;      // Google API token
-  mirror: string | undefined;      // Google mirror URL
-  source: "google" | "simply" | "lingva";  // 使用哪个后端
+  apiKey: string; // Google API token
+  mirror: string | undefined; // Google mirror URL
+  source: "google" | "simply" | "lingva"; // 使用哪个后端
 }
 
 export class GoogleWrapper implements Translator {
@@ -95,7 +95,9 @@ export class GoogleWrapper implements Translator {
     from: Language,
     to: Language
   ): Promise<TranslateResult> {
-    return this.translator.translate(text, from, to).then((res) => this.makeitGoogle(res));
+    return this.translator
+      .translate(text, from, to)
+      .then((res) => this.makeitGoogle(res));
   }
 
   async detect(text: string): Promise<Language> {

@@ -9,13 +9,12 @@ export const providerTemplates: ProviderTemplate[] = [
     type: "stepfun",
     name: "阶跃星辰(StepFun)",
     apiBase: "https://api.stepfun.com/v1",
-    recommendedModels: [
-      "step-3.5-flash",
-    ],
+    recommendedModels: ["step-3.5-flash"],
     icon: "mdi-robot",
     image: "stepfun.svg",
     docUrl: "https://platform.stepfun.com/docs/zh/overview/concept",
-    description: "阶跃星辰开放平台 - 注意：系统已内置免费版本，此处添加需自备API密钥",
+    description:
+      "阶跃星辰开放平台 - 注意：系统已内置免费版本，此处添加需自备API密钥",
   },
   {
     type: "openai",
@@ -36,7 +35,8 @@ export const providerTemplates: ProviderTemplate[] = [
   {
     type: "azure",
     name: "Azure OpenAI",
-    apiBase: "https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}",
+    apiBase:
+      "https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}",
     recommendedModels: ["gpt-4", "gpt-35-turbo"],
     icon: "mdi-microsoft-azure",
     image: "azure.svg",
@@ -71,12 +71,7 @@ export const providerTemplates: ProviderTemplate[] = [
     type: "zhipu",
     name: "智谱 AI (GLM)",
     apiBase: "https://open.bigmodel.cn/api/paas/v4",
-    recommendedModels: [
-      "glm-4",
-      "glm-4-plus",
-      "glm-4-air",
-      "glm-3-turbo",
-    ],
+    recommendedModels: ["glm-4", "glm-4-plus", "glm-4-air", "glm-3-turbo"],
     icon: "mdi-lightbulb-on",
     image: "zhipu.svg",
     docUrl: "https://open.bigmodel.cn/dev/api",
@@ -101,12 +96,7 @@ export const providerTemplates: ProviderTemplate[] = [
     type: "ollama",
     name: "Ollama (本地)",
     apiBase: "http://localhost:11434/v1",
-    recommendedModels: [
-      "llama3.2",
-      "qwen2.5",
-      "gemma2",
-      "mistral",
-    ],
+    recommendedModels: ["llama3.2", "qwen2.5", "gemma2", "mistral"],
     icon: "mdi-server",
     image: "ollama.svg",
     docUrl: "https://ollama.com/",

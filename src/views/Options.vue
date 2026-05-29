@@ -1,10 +1,6 @@
 <template>
   <div class="options-root">
-    <div
-      v-for="group in groupedActions"
-      :key="group.key"
-      class="options-group"
-    >
+    <div v-for="group in groupedActions" :key="group.key" class="options-group">
       <div v-if="group.title" class="options-group-title">
         {{ group.title }}
       </div>
@@ -53,8 +49,11 @@ export default class Options extends BaseView {
     const actions = this.actionKeys.map((id) =>
       this.$controller.action.getAction(id)
     );
-    const groups: Array<{ key: string; title: string; items: ActionView[] }> =
-      [];
+    const groups: Array<{
+      key: string;
+      title: string;
+      items: ActionView[];
+    }> = [];
     let index = 0;
     actions.forEach((action) => {
       const title = action.layout?.group || "";
@@ -76,7 +75,10 @@ export default class Options extends BaseView {
     if (action.layout?.span && action.layout.span >= 1) {
       return "options-item-full";
     }
-    if (action.actionType === "prompt" || action.actionType === "multi_select") {
+    if (
+      action.actionType === "prompt" ||
+      action.actionType === "multi_select"
+    ) {
       return "options-item-full";
     }
     return "";

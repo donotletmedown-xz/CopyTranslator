@@ -138,8 +138,8 @@ export class UpdateChecker {
             path.join(env.externalResource, "update", "changelog.html")
           );
           win.webContents.once("did-finish-load", () => {
-            let buff = Buffer.from(url, "utf-8");
-            let base64data = buff.toString("base64"); //这里因为是直接传，所以可能会存在一些问题，看看如果先加密再解密会不会好点
+            const buff = Buffer.from(url, "utf-8");
+            const base64data = buff.toString("base64"); //这里因为是直接传，所以可能会存在一些问题，看看如果先加密再解密会不会好点
             win.webContents.executeJavaScript(`fetchPage("${base64data}");`);
           });
         });

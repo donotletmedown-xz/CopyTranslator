@@ -12,24 +12,25 @@
 
       <v-card-text>
         <!-- AI翻译说明 -->
-        <v-alert
-          type="info"
-          dense
-          text
-          class="mb-4"
-        >
-          {{ trans["aiTranslatorDescription"] || "这些翻译器基于人工智能（大语言模型/LLM），可以理解上下文并提供更自然的翻译。所有在此处添加的供应商都需要您自行配置API密钥。" }}
+        <v-alert type="info" dense text class="mb-4">
+          {{
+            trans["aiTranslatorDescription"] ||
+            "这些翻译器基于人工智能（大语言模型/LLM），可以理解上下文并提供更自然的翻译。所有在此处添加的供应商都需要您自行配置API密钥。"
+          }}
         </v-alert>
         <!-- 供应商列表 -->
         <v-expansion-panels v-if="providers.length > 0" multiple>
-          <v-expansion-panel
-            v-for="provider in providers"
-            :key="provider.id"
-          >
+          <v-expansion-panel v-for="provider in providers" :key="provider.id">
             <!-- 供应商头部 -->
             <v-expansion-panel-header>
               <div class="d-flex align-center flex-grow-1">
-                <div :class="['provider-icon', 'mr-2', `provider-${provider.providerType}`]"></div>
+                <div
+                  :class="[
+                    'provider-icon',
+                    'mr-2',
+                    `provider-${provider.providerType}`,
+                  ]"
+                ></div>
                 <div class="flex-grow-1">
                   <div class="font-weight-medium">
                     {{ provider.name }}
@@ -43,7 +44,9 @@
                     </v-chip>
                   </div>
                   <div class="caption grey--text">
-                    {{ provider.apiBase }} | {{ provider.enabledModels.length }} {{ trans["modelsEnabled"] || "个模型已启用" }}
+                    {{ provider.apiBase }} |
+                    {{ provider.enabledModels.length }}
+                    {{ trans["modelsEnabled"] || "个模型已启用" }}
                   </div>
                 </div>
               </div>
@@ -54,11 +57,21 @@
               <v-card flat>
                 <!-- 供应商操作按钮 -->
                 <v-card-actions class="px-0 py-2">
-                  <v-btn small text color="primary" @click="editProvider(provider)">
+                  <v-btn
+                    small
+                    text
+                    color="primary"
+                    @click="editProvider(provider)"
+                  >
                     <v-icon small left>mdi-pencil</v-icon>
                     {{ trans["edit"] || "编辑" }}
                   </v-btn>
-                  <v-btn small text color="error" @click="removeProviderConfirm(provider.id)">
+                  <v-btn
+                    small
+                    text
+                    color="error"
+                    @click="removeProviderConfirm(provider.id)"
+                  >
                     <v-icon small left>mdi-delete</v-icon>
                     {{ trans["delete"] || "删除" }}
                   </v-btn>
@@ -74,7 +87,9 @@
                 <!-- 模型选择区域 -->
                 <v-card-text class="px-0">
                   <div class="d-flex align-center mb-2">
-                    <span class="subtitle-2">{{ trans["selectModels"] || "选择要启用的模型" }}</span>
+                    <span class="subtitle-2">{{
+                      trans["selectModels"] || "选择要启用的模型"
+                    }}</span>
                     <v-spacer></v-spacer>
                     <v-btn
                       x-small
@@ -88,10 +103,17 @@
                   </div>
 
                   <!-- 模型列表 -->
-                  <div v-if="provider.availableModels && provider.availableModels.length > 0">
+                  <div
+                    v-if="
+                      provider.availableModels &&
+                      provider.availableModels.length > 0
+                    "
+                  >
                     <v-chip-group
                       :value="provider.enabledModels"
-                      @change="(models) => updateProviderModels(provider.id, models)"
+                      @change="
+                        (models) => updateProviderModels(provider.id, models)
+                      "
                       multiple
                       column
                     >
@@ -116,7 +138,9 @@
                     type="info"
                     class="mt-2"
                   >
-                    {{ trans["noModelsHint"] || "点击刷新按钮获取可用模型列表" }}
+                    {{
+                      trans["noModelsHint"] || "点击刷新按钮获取可用模型列表"
+                    }}
                   </v-alert>
 
                   <!-- 模型获取错误 -->
@@ -148,7 +172,11 @@
     <v-dialog v-model="showAddProviderDialog" max-width="600px" persistent>
       <v-card>
         <v-card-title>
-          {{ editingProvider ? (trans["editAIProvider"] || "编辑AI供应商") : (trans["addAIProvider"] || "添加AI供应商") }}
+          {{
+            editingProvider
+              ? trans["editAIProvider"] || "编辑AI供应商"
+              : trans["addAIProvider"] || "添加AI供应商"
+          }}
         </v-card-title>
 
         <v-card-text>
@@ -164,7 +192,9 @@
               dense
             >
               <template v-slot:item="{ item }">
-                <div :class="['provider-icon', 'mr-2', `provider-${item.value}`]"></div>
+                <div
+                  :class="['provider-icon', 'mr-2', `provider-${item.value}`]"
+                ></div>
                 <div>
                   <div>{{ item.text }}</div>
                   <div class="caption grey--text">{{ item.description }}</div>
@@ -210,7 +240,8 @@
                 <v-expansion-panel-content>
                   <div class="mt-2">
                     <label class="caption">
-                      {{ trans["temperature"] || "温度" }}: {{ providerForm.config.temperature }}
+                      {{ trans["temperature"] || "温度" }}:
+                      {{ providerForm.config.temperature }}
                     </label>
                     <v-slider
                       v-model="providerForm.config.temperature"
@@ -234,7 +265,9 @@
                   <v-textarea
                     v-model="providerForm.config.prompt"
                     :label="trans['customPrompt'] || '自定义提示词'"
-                    :placeholder="trans['promptPlaceholder'] || '留空使用默认提示词'"
+                    :placeholder="
+                      trans['promptPlaceholder'] || '留空使用默认提示词'
+                    "
                     rows="4"
                     outlined
                     dense
@@ -247,12 +280,10 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="closeProviderDialog">{{ trans["cancel"] || "取消" }}</v-btn>
-          <v-btn
-            color="primary"
-            :disabled="!formValid"
-            @click="saveProvider"
-          >
+          <v-btn text @click="closeProviderDialog">{{
+            trans["cancel"] || "取消"
+          }}</v-btn>
+          <v-btn color="primary" :disabled="!formValid" @click="saveProvider">
             {{ trans["ok"] || "确定" }}
           </v-btn>
         </v-card-actions>
@@ -262,7 +293,9 @@
     <!-- 测试对话框 -->
     <v-dialog v-model="showTestDialog" max-width="500px">
       <v-card>
-        <v-card-title>{{ trans["testAIProvider"] || "测试AI供应商" }}</v-card-title>
+        <v-card-title>{{
+          trans["testAIProvider"] || "测试AI供应商"
+        }}</v-card-title>
         <v-card-text>
           <v-select
             v-model="testModel"
@@ -307,7 +340,9 @@
 
           <div v-if="testResult" class="mt-3">
             <v-alert type="success" dense>
-              <div><strong>{{ trans["testResult"] || "测试结果" }}:</strong></div>
+              <div>
+                <strong>{{ trans["testResult"] || "测试结果" }}:</strong>
+              </div>
               <div>{{ testResult }}</div>
             </v-alert>
           </div>
@@ -320,7 +355,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="showTestDialog = false">{{ trans["cancel"] || "取消" }}</v-btn>
+          <v-btn text @click="showTestDialog = false">{{
+            trans["cancel"] || "取消"
+          }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -332,7 +369,10 @@ import { Component, Vue } from "vue-property-decorator";
 import { customTranslatorManager } from "@/common/translate/custom-translators";
 import { fetchModels } from "@/common/translate/model-fetcher";
 import { ProviderConfig } from "@/common/translate/types";
-import { providerTemplates, getProviderTemplate } from "@/common/translate/provider-templates";
+import {
+  providerTemplates,
+  getProviderTemplate,
+} from "@/common/translate/provider-templates";
 import eventBus from "@/common/event-bus";
 
 interface ProviderWithUI extends ProviderConfig {
@@ -349,7 +389,7 @@ export default class CustomTranslatorManagerView extends Vue {
   formValid = false;
   editingProvider: ProviderConfig | null = null;
   selectedTemplate = "";
-  
+
   // 测试相关
   testing = false;
   testText = "Hello, world!";
@@ -383,23 +423,25 @@ export default class CustomTranslatorManagerView extends Vue {
   }
 
   get templateItems() {
-   return providerTemplates.map(t => {
-     const item = {
-       text: t.name,
-       value: t.type,
-       description: t.description || "",
-     };
-     // 为阶跃星辰添加说明
-     if (t.type === 'stepfun') {
-       item.text = `${t.name} (${this.trans['stepfunCustomNote'] || '需自备API密钥'})`;
-     }
-     return item;
-   });
- }
+    return providerTemplates.map((t) => {
+      const item = {
+        text: t.name,
+        value: t.type,
+        description: t.description || "",
+      };
+      // 为阶跃星辰添加说明
+      if (t.type === "stepfun") {
+        item.text = `${t.name} (${
+          this.trans["stepfunCustomNote"] || "需自备API密钥"
+        })`;
+      }
+      return item;
+    });
+  }
 
   get rules() {
     return {
-      required: (v: string) => !!v || (this.trans["required"] || "此项必填"),
+      required: (v: string) => !!v || this.trans["required"] || "此项必填",
     };
   }
 
@@ -419,9 +461,10 @@ export default class CustomTranslatorManagerView extends Vue {
 
   loadProviders() {
     const baseProviders = customTranslatorManager.getAllProviders();
-    this.providers = baseProviders.map(p => ({
+    this.providers = baseProviders.map((p) => ({
       ...p,
-      availableModels: p.enabledModels.length > 0 ? [...p.enabledModels] : undefined,
+      availableModels:
+        p.enabledModels.length > 0 ? [...p.enabledModels] : undefined,
       fetchingModels: false,
       modelFetchError: "",
     }));
@@ -433,7 +476,7 @@ export default class CustomTranslatorManagerView extends Vue {
       this.providerForm.providerType = template.type;
       this.providerForm.apiBase = template.apiBase;
       this.providerForm.name = template.name;
-      
+
       // 清空已获取的模型
       this.providerForm.enabledModels = [];
     }
@@ -441,7 +484,8 @@ export default class CustomTranslatorManagerView extends Vue {
 
   async fetchProviderModels(provider: ProviderWithUI) {
     if (!provider.apiBase || !provider.apiKey) {
-      provider.modelFetchError = this.trans["apiConfigRequired"] || "请先配置 API Base 和 API Key";
+      provider.modelFetchError =
+        this.trans["apiConfigRequired"] || "请先配置 API Base 和 API Key";
       return;
     }
 
@@ -450,15 +494,18 @@ export default class CustomTranslatorManagerView extends Vue {
 
     try {
       const models = await fetchModels(provider.apiBase, provider.apiKey);
-      
+
       if (models.length === 0) {
         // 使用推荐模型作为后备
         const template = getProviderTemplate(provider.providerType);
         if (template && template.recommendedModels.length > 0) {
           provider.availableModels = template.recommendedModels;
-          provider.modelFetchError = this.trans["usingRecommendedModels"] || "API 未返回模型列表，使用推荐模型";
+          provider.modelFetchError =
+            this.trans["usingRecommendedModels"] ||
+            "API 未返回模型列表，使用推荐模型";
         } else {
-          provider.modelFetchError = this.trans["noModelsFound"] || "未找到任何模型";
+          provider.modelFetchError =
+            this.trans["noModelsFound"] || "未找到任何模型";
           provider.availableModels = [];
         }
       } else {
@@ -468,7 +515,7 @@ export default class CustomTranslatorManagerView extends Vue {
     } catch (error) {
       provider.modelFetchError = error.message || "获取模型列表失败";
       console.error("获取模型失败:", error);
-      
+
       // 失败时尝试使用推荐模型
       const template = getProviderTemplate(provider.providerType);
       if (template && template.recommendedModels.length > 0) {
@@ -492,7 +539,7 @@ export default class CustomTranslatorManagerView extends Vue {
   }
 
   removeProviderConfirm(id: string) {
-    const provider = this.providers.find(p => p.id === id);
+    const provider = this.providers.find((p) => p.id === id);
     const name = provider?.name || id;
     if (confirm(`${this.trans["confirmDelete"] || "确认删除"} "${name}"?`)) {
       customTranslatorManager.removeProvider(id);
@@ -519,7 +566,7 @@ export default class CustomTranslatorManagerView extends Vue {
     } else {
       // 添加新供应商时自动生成 ID
       let baseId = this.providerForm.providerType || "custom";
-      
+
       // 如果有名称，尝试使用名称的简化版本
       if (this.providerForm.name) {
         const simpleName = this.providerForm.name
@@ -530,12 +577,14 @@ export default class CustomTranslatorManagerView extends Vue {
           baseId = simpleName;
         }
       }
-      
+
       // 生成唯一 ID
-      this.providerForm.id = customTranslatorManager.generateUniqueProviderId(baseId);
+      this.providerForm.id = customTranslatorManager.generateUniqueProviderId(
+        baseId
+      );
       customTranslatorManager.addProvider(this.providerForm);
     }
-    
+
     this.loadProviders();
     this.closeProviderDialog();
     eventBus.at("dispatch", "reloadCustomTranslators", null);
@@ -570,7 +619,7 @@ export default class CustomTranslatorManagerView extends Vue {
       alert(this.trans["noModelsEnabled"] || "请先启用至少一个模型");
       return;
     }
-    
+
     this.testingProvider = provider;
     this.testModel = provider.enabledModels[0];
     this.showTestDialog = true;

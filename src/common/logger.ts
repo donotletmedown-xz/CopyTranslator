@@ -5,7 +5,8 @@ export function initLog() {
   logger.toast = (text: string) => {
     eventBus.at("dispatch", "toast", text);
   };
-  Object.assign(console, logger.functions);
+  // 暂时禁用 electron-log 的 console 重写，避免卡住
+  // Object.assign(console, logger.functions);
   const rawWarn = console.warn.bind(console);
   console.warn = (...args: any[]) => {
     const first = args[0];

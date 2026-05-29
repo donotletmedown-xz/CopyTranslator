@@ -56,9 +56,9 @@ export interface NetworkProxyConfig {
 // 字段UI元数据
 export interface FieldMetadata {
   uiType: "text" | "select" | "textarea" | "number" | "checkbox";
-  options?: readonly string[];  // 下拉选项
-  label?: string;               // i18n key
-  description?: string;         // 提示文本
+  options?: readonly string[]; // 下拉选项
+  label?: string; // i18n key
+  description?: string; // 提示文本
 }
 
 // 字段名到元数据的映射
@@ -71,7 +71,7 @@ interface Rule {
   check?: CheckFuction; // 检查是否有效的函数
   minimalVersion?: string;
   needSave?: boolean;
-  metadata?: FieldMetadataMap;  // 字段UI元数据（仅用于UI渲染，不持久化）
+  metadata?: FieldMetadataMap; // 字段UI元数据（仅用于UI渲染，不持久化）
   notice?: string;
   docUrl?: string;
 }
@@ -133,7 +133,13 @@ class FlexibleGroupRule<T> implements Rule {
     this.predefined = predefined;
     this.minimalVersion = minimalVersion;
     this.check = (value: Array<T | string>) => {
-      if (!value.map((item) => options.includes(item as T) || typeof item === "string").includes(false)) {
+      if (
+        !value
+          .map(
+            (item) => options.includes(item as T) || typeof item === "string"
+          )
+          .includes(false)
+      ) {
         return true;
       } else {
         for (const item of value) {
@@ -206,7 +212,7 @@ export class FlexibleUnionRule<T> implements Rule {
     this.minimalVersion = minimalVersion;
     this.check = function (value: T | string) {
       // 接受预定义选项或任何字符串类型的值
-      return options.includes(value as T) || typeof value === 'string';
+      return options.includes(value as T) || typeof value === "string";
     };
   }
 }

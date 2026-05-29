@@ -1,23 +1,25 @@
-import type { Translator, ProviderConfig, CustomTranslatorConfig } from "./types";
+import type {
+  Translator,
+  ProviderConfig,
+  CustomTranslatorConfig,
+} from "./types";
 import config from "../configuration";
 import eventBus from "../event-bus";
 
-
-
 /**
  * 自定义翻译器管理器（基于供应商）
- * 
+ *
  * 新架构：
  * - 供应商配置：存储 API Base、API Key、已启用的模型列表
  * - 翻译器实例：从供应商配置展开生成，ID 格式为 `{providerId}-{modelName}`
  */
 export class CustomTranslatorManager {
   private static instance: CustomTranslatorManager;
-  
+
   // 翻译器实例缓存（运行时生成）
   private customTranslators: Map<string, Translator> = new Map();
   private customConfigs: Map<string, CustomTranslatorConfig> = new Map();
-  
+
   // 供应商配置（持久化存储）
   private providers: Map<string, ProviderConfig> = new Map();
   private initialized = false;
@@ -46,7 +48,11 @@ export class CustomTranslatorManager {
    * 确保已初始化（懒加载）
    */
   private isConfigReady(): boolean {
-    return !!config && typeof config.get === "function" && typeof config.set === "function";
+    return (
+      !!config &&
+      typeof config.get === "function" &&
+      typeof config.set === "function"
+    );
   }
 
   private tryInitialize() {
@@ -57,7 +63,10 @@ export class CustomTranslatorManager {
       }
       this.initialize();
     } catch (error) {
-      console.warn("[供应商管理] 构造函数初始化失败 (可能是配置尚未准备好):", error);
+      console.warn(
+        "[供应商管理] 构造函数初始化失败 (可能是配置尚未准备好):",
+        error
+      );
     }
   }
 
@@ -68,32 +77,46 @@ export class CustomTranslatorManager {
       return;
     }
     this.initialized = true;
-    console.debug("[供应商管理] 开始初始化...");
+    console.log("[供应商管理] 开始初始化...");
     this.loadFromConfig();
+    console.log("[供应商管理] loadFromConfig 完成");
     this.expandProvidersToTranslators();
+    console.log("[供应商管理] expandProvidersToTranslators 完成");
+    console.log("[供应商管理] 准备设置 customTranslators...");
     config.set("customTranslators", this.getAllIds());
-    console.debug("[供应商管理] 初始化完成");
+    console.log("[供应商管理] 初始化完成");
   }
 
   /**
    * 从配置系统加载供应商配置
    */
   private loadFromConfig() {
+    console.log("[供应商管理] loadFromConfig 开始");
     try {
-      if (!config || typeof config.get !== 'function') {
+      console.log("[供应商管理] 检查 config...");
+      if (!config || typeof config.get !== "function") {
         console.warn("[供应商管理] 配置系统尚未初始化，跳过加载");
         return;
       }
-      
-      const providerConfigs = config.get("translatorProviders") as ProviderConfig[] || [];
-      console.debug(`[供应商管理] 从配置加载 ${providerConfigs.length} 个供应商`);
-      
+      console.log("[供应商管理] 准备获取 translatorProviders");
+      console.log("[供应商管理] config 对象:", typeof config, config ? "exists" : "null");
+
+      console.log("[供应商管理] 调用 config.get...");
+      const providerConfigs =
+        (config.get("translatorProviders") as ProviderConfig[]) || [];
+      console.log(
+        `[供应商管理] 从配置加载 ${providerConfigs.length} 个供应商`
+      );
+
       for (const cfg of providerConfigs) {
         if (cfg.enabled !== false) {
           this.providers.set(cfg.id, cfg);
-          console.debug(`[供应商管理] 加载供应商: ${cfg.id} (${cfg.name}), 启用 ${cfg.enabledModels.length} 个模型`);
+          console.log(
+            `[供应商管理] 加载供应商: ${cfg.id} (${cfg.name}), 启用 ${cfg.enabledModels.length} 个模型`
+          );
         }
       }
+      console.log("[供应商管理] loadFromConfig 结束");
     } catch (error) {
       console.error("[供应商管理] 加载失败:", error);
     }
@@ -104,38 +127,53 @@ export class CustomTranslatorManager {
    */
   private expandProvidersToTranslators() {
     this.customTranslators.clear();
-    
+
     for (const provider of this.providers.values()) {
       if (provider.enabled === false) continue;
-      
+
       for (const modelName of provider.enabledModels) {
         try {
-          const translatorId = this.getTranslatorIdForModel(provider.id, modelName);
-          const translatorConfig = this.getTranslatorConfig(provider, modelName);
-          
+          const translatorId = this.getTranslatorIdForModel(
+            provider.id,
+            modelName
+          );
+          const translatorConfig = this.getTranslatorConfig(
+            provider,
+            modelName
+          );
+
           if (translatorConfig) {
             this.customConfigs.set(translatorId, translatorConfig);
-            
+
             // 渲染进程优化：不在渲染进程创建实际的翻译器实例，避免加载重型依赖
-            if (process.type !== 'renderer') {
-                const translator = this.createTranslator(translatorConfig);
-                this.customTranslators.set(translatorId, translator);
-                console.debug(`[供应商管理] 生成翻译器实例: ${translatorId}`);
+            if (process.type !== "renderer") {
+              const translator = this.createTranslator(translatorConfig);
+              this.customTranslators.set(translatorId, translator);
+              console.debug(`[供应商管理] 生成翻译器实例: ${translatorId}`);
             } else {
-                console.debug(`[供应商管理] 跳过生成翻译器实例 (渲染进程): ${translatorId}`);
+              console.debug(
+                `[供应商管理] 跳过生成翻译器实例 (渲染进程): ${translatorId}`
+              );
             }
           }
         } catch (error) {
-          console.error(`[供应商管理] 创建翻译器失败 ${provider.id}-${modelName}:`, error);
+          console.error(
+            `[供应商管理] 创建翻译器失败 ${provider.id}-${modelName}:`,
+            error
+          );
         }
       }
     }
-    
-    console.debug(`[供应商管理] 共生成 ${this.customTranslators.size} 个翻译器实例`);
+
+    console.debug(
+      `[供应商管理] 共生成 ${this.customTranslators.size} 个翻译器实例`
+    );
   }
 
-
-  private getTranslatorConfig(provider: ProviderConfig, modelName: string): CustomTranslatorConfig|null {
+  private getTranslatorConfig(
+    provider: ProviderConfig,
+    modelName: string
+  ): CustomTranslatorConfig | null {
     try {
       // 目前只支持 OpenAI 兼容 API
       const config = provider.config || {};
@@ -161,7 +199,9 @@ export class CustomTranslatorManager {
   /**
    * 创建翻译器实例
    */
-  private createTranslator(translatorConfig: CustomTranslatorConfig): Translator {
+  private createTranslator(
+    translatorConfig: CustomTranslatorConfig
+  ): Translator {
     const { OpenAI } = require("./openai");
     const { axios } = require("./proxy");
     return new OpenAI({
@@ -200,7 +240,7 @@ export class CustomTranslatorManager {
       this.providers.set(cfg.id, cfg);
       this.expandProvidersToTranslators();
       this.saveToConfig();
-      
+
       console.debug(`[供应商管理] 添加供应商: ${cfg.id} (${cfg.name})`);
       return true;
     } catch (error) {
@@ -233,7 +273,7 @@ export class CustomTranslatorManager {
       this.providers.set(id, updated);
       this.expandProvidersToTranslators();
       this.saveToConfig();
-      
+
       console.debug(`[供应商管理] 更新供应商: ${id}`);
       return true;
     } catch (error) {
@@ -254,7 +294,7 @@ export class CustomTranslatorManager {
       this.providers.delete(id);
       this.expandProvidersToTranslators();
       this.saveToConfig();
-      
+
       console.debug(`[供应商管理] 移除供应商: ${id}`);
       return true;
     } catch (error) {
@@ -283,12 +323,12 @@ export class CustomTranslatorManager {
   generateUniqueProviderId(baseName: string): string {
     let id = baseName;
     let counter = 1;
-    
+
     while (this.providers.has(id)) {
       id = `${baseName}-${counter}`;
       counter++;
     }
-    
+
     return id;
   }
 
@@ -311,7 +351,7 @@ export class CustomTranslatorManager {
       console.debug(`[供应商管理] 启用模型: ${providerId} - ${modelName}`);
       return true;
     }
-    
+
     return false;
   }
 
@@ -333,7 +373,7 @@ export class CustomTranslatorManager {
       console.debug(`[供应商管理] 禁用模型: ${providerId} - ${modelName}`);
       return true;
     }
-    
+
     return false;
   }
 
@@ -372,7 +412,11 @@ export class CustomTranslatorManager {
     provider.enabledModels = [...models];
     this.expandProvidersToTranslators();
     this.saveToConfig();
-    console.debug(`[供应商管理] 更新供应商 ${providerId} 的启用模型列表: ${models.join(', ')}`);
+    console.debug(
+      `[供应商管理] 更新供应商 ${providerId} 的启用模型列表: ${models.join(
+        ", "
+      )}`
+    );
     return true;
   }
 
@@ -391,7 +435,11 @@ export class CustomTranslatorManager {
   getTranslator(id: string): Translator | undefined {
     const translator = this.customTranslators.get(id);
     if (!translator) {
-      console.warn(`[供应商管理] 未找到翻译器 "${id}"，可用的有: ${Array.from(this.customTranslators.keys()).join(', ')}`);
+      console.warn(
+        `[供应商管理] 未找到翻译器 "${id}"，可用的有: ${Array.from(
+          this.customTranslators.keys()
+        ).join(", ")}`
+      );
     }
     return translator;
   }

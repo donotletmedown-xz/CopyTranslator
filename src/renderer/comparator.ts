@@ -7,7 +7,7 @@ export type CompareResult = {
 };
 
 export function compareAll(results: ResultBuffer): CompareResult {
-  let engines = Object.keys(results);
+  const engines = Object.keys(results);
   engines.sort();
   let anchor = getConfigByKey("translatorType");
   if (!engines.includes(anchor)) {
@@ -16,10 +16,10 @@ export function compareAll(results: ResultBuffer): CompareResult {
   engines[engines.indexOf(anchor)] = engines[0]; //换一下位置
   engines[0] = anchor;
 
-  let anchorResult = results[anchor] as SharedResult;
+  const anchorResult = results[anchor] as SharedResult;
   const compareResult: CompareResult = {};
-  for (let engine of engines) {
-    let parts: any = compare(anchorResult, results[engine]);
+  for (const engine of engines) {
+    const parts: any = compare(anchorResult, results[engine]);
     compareResult[engine] = parts;
   }
   return compareResult;
@@ -28,7 +28,7 @@ export function compareAll(results: ResultBuffer): CompareResult {
 function compare(anchorResult: SharedResult, targetResult: SharedResult) {
   let anchorParas = anchorResult.transPara;
   let targetParas = targetResult.transPara;
-  let all_parts = [];
+  const all_parts = [];
   if (anchorParas.length != targetParas.length) {
     anchorParas = [anchorResult.translation];
     targetParas = [targetResult.translation];

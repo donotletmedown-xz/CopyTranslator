@@ -11,7 +11,10 @@
         dense
         :height="titlebarHeight"
         :flat="config.penerate"
-        :class="{ 'rounded-top-bar': !drawer, 'rounded-top-right-only': drawer }"
+        :class="{
+          'rounded-top-bar': !drawer,
+          'rounded-top-right-only': drawer,
+        }"
       >
         <ActionButton
           v-if="!config.penerate"
@@ -196,9 +199,15 @@ export default class Contrast extends Mixins(BaseView, WindowController) {
     const actions = this.actionKeys.map((id) =>
       this.$controller.action.getAction(id)
     );
-    const groups: Array<{ key: string; title: string; items: Identifier[] }> =
-      [];
-    const groupMap = new Map<string, { key: string; title: string; items: Identifier[] }>();
+    const groups: Array<{
+      key: string;
+      title: string;
+      items: Identifier[];
+    }> = [];
+    const groupMap = new Map<
+      string,
+      { key: string; title: string; items: Identifier[] }
+    >();
     actions.forEach((action) => {
       const title = action.layout?.group || "";
       const key = title || "group";
@@ -241,8 +250,6 @@ export default class Contrast extends Mixins(BaseView, WindowController) {
     if (!this.config.neverShowTips) this.dialog = true;
   }
 
-
-
   get nButton() {
     return Math.max(
       1,
@@ -258,7 +265,6 @@ export default class Contrast extends Mixins(BaseView, WindowController) {
   }
 
   get engines(): Array<GeneralTranslatorType | DictionaryType | string> {
-    
     const translatorEngines: Array<GeneralTranslatorType | string> = [
       ...this.config["translator-enabled"],
       ...abstractTranslatorTypes,

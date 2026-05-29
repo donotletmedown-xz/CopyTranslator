@@ -31,13 +31,13 @@ export const getProxyAxios = (info?: boolean, googleMirror?: string) => {
               url: config.url as string,
               method: config.method,
             });
-            
+
             request.on("response", (response) => {
               // const startTime = Date.now();
               // console.log(`[GoogleTranslate] Response received. Status: ${response.statusCode}`);
-              
-              let chunks: Buffer[] = [];
-              
+
+              const chunks: Buffer[] = [];
+
               response.on("data", (chunk) => {
                 chunks.push(chunk);
               });
@@ -60,9 +60,9 @@ export const getProxyAxios = (info?: boolean, googleMirror?: string) => {
                 }
               });
 
-              response.on("error", (error:Error) => {
-                 console.error(`[GoogleTranslate] Response error:`, error);
-                 reject(error);
+              response.on("error", (error: Error) => {
+                console.error(`[GoogleTranslate] Response error:`, error);
+                reject(error);
               });
             });
 
@@ -84,8 +84,8 @@ export const getProxyAxios = (info?: boolean, googleMirror?: string) => {
     };
     return axios_.create(axiosOptions);
   } else {
-    return axios_.create({timeout:5000});
+    return axios_.create({ timeout: 5000 });
   }
 };
 
-export let axios: any = getProxyAxios(true);
+export const axios: any = getProxyAxios(true);

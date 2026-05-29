@@ -1,4 +1,10 @@
-import { getTranslator, translators, Translator, Language, detectLang } from "./translators";
+import {
+  getTranslator,
+  translators,
+  Translator,
+  Language,
+  detectLang,
+} from "./translators";
 import {
   TranslateResult,
   DirectionalTranslator,
@@ -16,7 +22,10 @@ import store from "@/store";
 import { tracker } from "@/main/tracker";
 
 class ResultBufferManager {
-  public resultBufferMap = new Map<TranslatorType | string, SharedResult | undefined>();
+  public resultBufferMap = new Map<
+    TranslatorType | string,
+    SharedResult | undefined
+  >();
 
   engines: (TranslatorType | string)[] = [];
 
@@ -27,7 +36,7 @@ class ResultBufferManager {
   }
 
   sync() {
-    let resultBuffer: ResultBuffer = {};
+    const resultBuffer: ResultBuffer = {};
     for (const engine of this.engines) {
       if (this.has(engine)) {
         resultBuffer[engine] = this.get(engine) as SharedResult;
@@ -86,7 +95,6 @@ export class Compound {
     this.config = config;
   }
 
-
   initialize() {
     return this.postSetEngines();
   }
@@ -112,7 +120,11 @@ export class Compound {
     return getTranslator(this.mainEngine);
   }
 
-  isSupport(engineName: TranslatorType | string, from: Language, to: Language): boolean {
+  isSupport(
+    engineName: TranslatorType | string,
+    from: Language,
+    to: Language
+  ): boolean {
     const engine = getTranslator(engineName);
     if (engine instanceof DirectionalTranslator) {
       return engine.isSupport(from, to);

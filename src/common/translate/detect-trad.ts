@@ -4,7 +4,7 @@ const TS = new Set(
 
 function isTrad(str: string) {
   let traditionalCount = 0;
-  for (let char of str) {
+  for (const char of str) {
     if (TS.has(char)) {
       traditionalCount++;
     }

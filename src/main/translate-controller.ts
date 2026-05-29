@@ -6,7 +6,12 @@ import {
   ResultBuffer,
   SharedResult,
 } from "../common/translate/types";
-import { colorRules, getColorRule, KeyConfig, NetworkProxyConfig } from "../common/rule";
+import {
+  colorRules,
+  getColorRule,
+  KeyConfig,
+  NetworkProxyConfig,
+} from "../common/rule";
 import {
   normalizeAppend,
   checkIsWord,
@@ -191,11 +196,16 @@ class TranslateController {
       case "testTranslate":
         {
           const { id, text, engine, from, to } = param;
-          console.debug(`[TranslateController] Handling testTranslate: ${engine}`);
+          console.debug(
+            `[TranslateController] Handling testTranslate: ${engine}`
+          );
           getTranslator(engine)
             .translate(text, from, to)
             .then((res) => {
-              console.debug(`[TranslateController] testTranslate success:`, res);
+              console.debug(
+                `[TranslateController] testTranslate success:`,
+                res
+              );
               // 使用 gat 发送，确保 IPC 也能收到
               eventBus.gat("testTranslateResult", { id, data: res });
             })
@@ -329,7 +339,9 @@ class TranslateController {
       return;
     }
     const originalText = clipboard.readText();
-    logger.debug(`checkClipboard: text length ${originalText ? originalText.length : 0}`);
+    logger.debug(
+      `checkClipboard: text length ${originalText ? originalText.length : 0}`
+    );
     if (typeof originalText != "string") {
       return; //内容并非文本
     }
@@ -354,7 +366,7 @@ class TranslateController {
     } else {
       logger.debug("Text is invalid (duplicate or ignored)");
       // Ensure status is correct even if we don't translate
-      this.setCurrentStatus(); 
+      this.setCurrentStatus();
     }
   }
 
@@ -535,7 +547,7 @@ class TranslateController {
 
     const engines = this.nextEngines;
     this.nextEngines = undefined;
-    let tasks = [this.translateSentence(engines)];
+    const tasks = [this.translateSentence(engines)];
     if (dict && this.needDict) {
       tasks.push(this.queryDictionary());
     }
@@ -614,7 +626,8 @@ class TranslateController {
     }
     let engines = overrideEngines;
     if (!engines || engines.length === 0) {
-      const enabled = this.get<(TranslatorType | string)[]>("translator-enabled") || [];
+      const enabled =
+        this.get<(TranslatorType | string)[]>("translator-enabled") || [];
       const custom = this.get<string[]>("customTranslators") || [];
       const activeSet = new Set(getEnabledWithCustomIds(enabled, custom));
       const multiSource = this.get<boolean>("multiSource");
@@ -628,7 +641,8 @@ class TranslateController {
         engines = filterByActiveEngines(engines, enabled, custom);
       }
     } else {
-      const enabled = this.get<(TranslatorType | string)[]>("translator-enabled") || [];
+      const enabled =
+        this.get<(TranslatorType | string)[]>("translator-enabled") || [];
       const custom = this.get<string[]>("customTranslators") || [];
       const activeSet = new Set(getEnabledWithCustomIds(enabled, custom));
       engines = filterExistingEngines(engines).filter((engine) =>
@@ -718,7 +732,7 @@ class TranslateController {
     if (watch) {
       // Ensure status is green (Listen) immediately
       this.setCurrentStatus();
-      
+
       clipboard.on("text-changed", () => {
         this.checkClipboard(true);
       });
@@ -754,7 +768,7 @@ class TranslateController {
     if (rule.check && !rule.check(key_config)) {
       logger.toast("请检查密钥配置");
       return;
-    } else if(!rule.check && !examToken(key_config)){
+    } else if (!rule.check && !examToken(key_config)) {
       // fallback到通用的检查方法，如果没有特殊检查方法的话
       logger.toast("请检查密钥配置");
       return;

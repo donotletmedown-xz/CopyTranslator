@@ -12,9 +12,9 @@ interface AppEvent {
 // 2. 配置项接口
 interface TrackerConfig {
   endpoint: string; // 你的 Cloudflare Custom Domain 接口
-  version: string;  // 当前软件版本
+  version: string; // 当前软件版本
   syncInterval?: number; // 同步间隔（毫秒），默认 10 分钟
-  threshold?: number;    // 累计多少条不同记录时触发同步，默认 50
+  threshold?: number; // 累计多少条不同记录时触发同步，默认 50
 }
 
 export class UniversalTracker {
@@ -40,7 +40,7 @@ export class UniversalTracker {
     this.timer = setInterval(() => this.flush(), this.syncInterval);
 
     // 监听进程退出（仅限 Node 环境）
-    process.on('beforeExit', () => this.flush());
+    process.on("beforeExit", () => this.flush());
   }
 
   /**
@@ -48,7 +48,7 @@ export class UniversalTracker {
    * @param type 事件类型，如 'translation', 'launch', 'heartbeat'
    * @param key 细分标识，如 'deepseek', 'startup'
    */
-  public track(type: string, key: string = 'default'): void {
+  public track(type: string, key: string = "default"): void {
     const compositeKey = `${type}|${key}`;
     const currentCount = this.buffer.get(compositeKey) || 0;
     this.buffer.set(compositeKey, currentCount + 1);
@@ -70,7 +70,7 @@ export class UniversalTracker {
     this.buffer.clear();
 
     const events: AppEvent[] = snapshot.map(([compKey, count]) => {
-      const [type, key] = compKey.split('|');
+      const [type, key] = compKey.split("|");
       return { type, key, version: this.version, count };
     });
 
@@ -78,7 +78,7 @@ export class UniversalTracker {
       await this.sendRequest({ events });
     } catch (error) {
       // 这里的错误可以静默处理，或者尝试将数据重新塞回 buffer
-      console.error('[Tracker] Sync failed:', error);
+      console.error("[Tracker] Sync failed:", error);
     }
   }
 

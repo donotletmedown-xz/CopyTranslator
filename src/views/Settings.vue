@@ -24,8 +24,12 @@
             trans["translatorManagement"] || "翻译器管理"
           }}</v-tab>
           <v-tab href="#ocrConfig">{{ trans["ocrConfig"] || "OCR" }}</v-tab>
-          <v-tab href="#customTranslators">{{ trans["customTranslators"] }}</v-tab>
-          <v-tab href="#networkProxy">{{ trans["networkProxy"] || "网络代理" }}</v-tab>
+          <v-tab href="#customTranslators">{{
+            trans["customTranslators"]
+          }}</v-tab>
+          <v-tab href="#networkProxy">{{
+            trans["networkProxy"] || "网络代理"
+          }}</v-tab>
           <v-tab href="#listenClipboardConfig">{{
             trans["listenClipboardConfig"]
           }}</v-tab>
@@ -109,7 +113,7 @@ import bus from "@/common/event-bus";
     ActionButtonConfig,
     TranslatorManager,
     OcrConfig,
-    NetworkProxy
+    NetworkProxy,
   },
 })
 export default class Settings extends BaseView {

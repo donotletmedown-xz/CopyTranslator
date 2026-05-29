@@ -7,7 +7,10 @@ import * as https from "https";
 // This file should only be imported by the main process
 const ProxyAgent = require("proxy-agent");
 
-export const updateAxiosProxy = (proxyConfig: NetworkProxyConfig, enable: boolean) => {
+export const updateAxiosProxy = (
+  proxyConfig: NetworkProxyConfig,
+  enable: boolean
+) => {
   if (enable) {
     const protocol = proxyConfig.protocol || "http";
     const host = proxyConfig.host;
